@@ -5,21 +5,18 @@ import java.util.UUID;
 
 public class Venue {
     private UUID id;
-    private String name;
+    private VenueName name;
 
     private Venue() {}
 
-    private Venue(UUID id, String name) {
+    private Venue(UUID id, VenueName name) {
         this.id = id;
         this.name = name;
     }
 
-    public static Venue create(UUID id, String name) {
-        Objects.requireNonNull(id);
-        Objects.requireNonNull(name);
-        if (name.isBlank()) {
-            throw new IllegalArgumentException("name should not be empty");
-        }
+    public static Venue create(UUID id, VenueName name) {
+        Objects.requireNonNull(id, "id should be defined");
+        Objects.requireNonNull(name, "name should be defined");
         return new Venue(id, name);
     }
 
@@ -27,7 +24,7 @@ public class Venue {
         return id;
     }
 
-    public String getName() {
+    public VenueName getName() {
         return name;
     }
 }
