@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: ticketing
+  datasource:
+    url: jdbc:postgresql://localhost:5433/ticketing_db
+    username: admin
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: validate
