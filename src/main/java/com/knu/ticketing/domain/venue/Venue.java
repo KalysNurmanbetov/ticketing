@@ -4,10 +4,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class Venue {
-    private UUID id;
-    private VenueName name;
-
-    private Venue() {}
+    private final UUID id;
+    private final VenueName name;
 
     private Venue(UUID id, VenueName name) {
         this.id = id;
@@ -20,6 +18,12 @@ public class Venue {
         return new Venue(id, name);
     }
 
+    public static Venue reconstitute(UUID id, VenueName name) {
+        Objects.requireNonNull(id, "id should be defined");
+        Objects.requireNonNull(name, "name should be defined");
+        return new Venue(id, name);
+    }
+
     public UUID getId() {
         return id;
     }
@@ -27,4 +31,6 @@ public class Venue {
     public VenueName getName() {
         return name;
     }
+
+
 }
