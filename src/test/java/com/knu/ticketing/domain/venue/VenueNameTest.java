@@ -7,8 +7,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class VenueNameTest {
 
@@ -56,6 +55,27 @@ class VenueNameTest {
         assertThat(new VenueName(name).value()).isEqualTo(name);
     }
 
+
+    @Test
+    void new_lengthGreaterMaxLength_throws() {
+        String longName = "R".repeat(VenueName.MAX_LENGTH + 1);
+
+        assertThatThrownBy(() -> new VenueName(longName))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("name");
+    }
+
+    static Stream<String> validLengthNames() {
+        String maxLength = "R".repeat(VenueName.MAX_LENGTH);
+        return Stream.of(maxLength, " " + maxLength + " ");
+    }
+
+    @ParameterizedTest
+    @MethodSource("validLengthNames")
+    void new_validLength_success(String name) {
+        assertThatCode(() -> new VenueName(name));
+    }
+
     @Test
     void normalized_mixedCase_lowercased() {
         assertThat(new VenueName(NAME).normalized()).isEqualTo("red room");
@@ -64,7 +84,6 @@ class VenueNameTest {
     static Stream<String> equalsNames() {
         return Stream.of("red room", "RED ROOM", "Red Room", "Red   room", NAME);
     }
-
 
     @ParameterizedTest
     @MethodSource("equalsNames")
