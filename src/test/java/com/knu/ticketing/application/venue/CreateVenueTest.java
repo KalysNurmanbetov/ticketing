@@ -1,4 +1,4 @@
-package com.knu.ticketing.application;
+package com.knu.ticketing.application.venue;
 
 import com.knu.ticketing.domain.venue.Venue;
 import com.knu.ticketing.domain.venue.VenueName;
