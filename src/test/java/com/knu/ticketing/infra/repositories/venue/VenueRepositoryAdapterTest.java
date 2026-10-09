@@ -47,7 +47,8 @@ public class VenueRepositoryAdapterTest {
         assertThat(repository.findById(venue.getId()))
                 .get()
                 .extracting(Venue::getName)
-                .isEqualTo(name);
+                .extracting(VenueName::value)
+                .isEqualTo(name.value());
     }
 
     @Test
@@ -61,7 +62,6 @@ public class VenueRepositoryAdapterTest {
         assertThatThrownBy(() -> {
             repository.save(venue2);
             jpa.flush();
-            em.clear();
         })
                 .isInstanceOf(DataIntegrityViolationException.class)
                 .hasMessageContaining("venues_name_key");
@@ -83,7 +83,7 @@ public class VenueRepositoryAdapterTest {
     }
 
     @Test
-    void findByName_withDifferentName_returnsSameVenue() {
+    void findByName_withDifferentName_returnsEmpty() {
         VenueName name = new VenueName("Red Room");
         Venue venue = Venue.create(UUID.randomUUID(), name);
         repository.save(venue);
