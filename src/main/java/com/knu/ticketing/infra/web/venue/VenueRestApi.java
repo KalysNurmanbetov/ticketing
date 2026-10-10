@@ -43,7 +43,8 @@ class VenueRestApi {
 
     @GetMapping("/{id}")
     ResponseEntity<VenueResponse> get(@PathVariable UUID id) {
-        return ResponseEntity.of(getVenue.run(id).map(VenueResponse::from));
+        Venue venue = getVenue.run(id);
+        return ResponseEntity.ok(VenueResponse.from(venue));
     }
 
     record CreateVenueRequest(@NotBlank @Size(max = 200) String name) {

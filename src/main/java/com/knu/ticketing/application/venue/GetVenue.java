@@ -1,12 +1,12 @@
 package com.knu.ticketing.application.venue;
 
+import com.knu.ticketing.application.venue.errors.VenueNotFoundException;
 import com.knu.ticketing.domain.venue.Venue;
 import com.knu.ticketing.domain.venue.VenueRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -19,8 +19,8 @@ public class GetVenue {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Venue> run(UUID id) {
+    public Venue run(UUID id) {
         Objects.requireNonNull(id, "id should be defined");
-        return venueRepository.findById(id);
+        return venueRepository.findById(id).orElseThrow(() -> new VenueNotFoundException(id));
     }
 }
