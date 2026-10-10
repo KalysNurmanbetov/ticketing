@@ -1,0 +1,17 @@
+package com.knu.ticketing.infra.web;
+
+import com.knu.ticketing.application.venue.errors.VenueAlreadyExistsException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+@RestControllerAdvice
+public class WebApiErrorHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(VenueAlreadyExistsException.class)
+    ProblemDetail handle(VenueAlreadyExistsException error) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, error.getMessage());
+    }
+}

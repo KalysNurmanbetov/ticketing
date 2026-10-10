@@ -33,7 +33,8 @@ class VenueRestApi {
     @PostMapping
     ResponseEntity<Void> create(@Valid @RequestBody CreateVenueRequest request) {
         UUID id = createVenue.run(request.name());
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(id)
                 .toUri();

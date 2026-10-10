@@ -4,11 +4,7 @@ import com.knu.ticketing.domain.venue.VenueName;
 
 public class VenueAlreadyExistsException extends RuntimeException {
 
-    public final VenueName givenName;
-
     public VenueAlreadyExistsException(VenueName name) {
         super(String.format("The venue with name '%s' already exists", name.value()));
-
-        this.givenName = name;
     }
 }
