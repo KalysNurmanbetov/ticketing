@@ -1,4 +1,4 @@
-package com.knu.ticketing.infra.controllers.venue;
+package com.knu.ticketing.infra.web.venue;
 
 import com.knu.ticketing.application.venue.CreateVenue;
 import com.knu.ticketing.application.venue.GetVenue;
