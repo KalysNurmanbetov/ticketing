@@ -1,5 +1,6 @@
 package com.knu.ticketing.application.venue;
 
+import com.knu.ticketing.application.venue.errors.VenueAlreadyExistsException;
 import com.knu.ticketing.domain.venue.Venue;
 import com.knu.ticketing.domain.venue.VenueName;
 import com.knu.ticketing.domain.venue.VenueRepository;
@@ -22,17 +23,10 @@ public class CreateVenue {
         VenueName venueName = new VenueName(name);
         Venue venue = Venue.create(UUID.randomUUID(), venueName);
 
-        if (venueRepository
-                .findByName(venueName)
-                .isPresent()) {
-            throw new IllegalStateException(String.format(
-                    "venue with name '%s' is already created",
-                    venueName.value()
-            ));
+        if (venueRepository.findByName(venueName).isPresent()) {
+            throw new VenueAlreadyExistsException(venueName);
         }
 
-        return venueRepository
-                .save(venue)
-                .getId();
+        return venueRepository.save(venue).getId();
     }
 }

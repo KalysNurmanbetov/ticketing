@@ -1,5 +1,6 @@
 package com.knu.ticketing.application.venue;
 
+import com.knu.ticketing.application.venue.errors.VenueAlreadyExistsException;
 import com.knu.ticketing.domain.venue.Venue;
 import com.knu.ticketing.domain.venue.VenueName;
 import com.knu.ticketing.domain.venue.VenueRepository;
@@ -36,8 +37,7 @@ class CreateVenueTest {
         venueRepository.save(Venue.create(UUID.randomUUID(), new VenueName(name)));
 
         assertThatThrownBy(() -> createVenue.run(name))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("name");
+                .isInstanceOf(VenueAlreadyExistsException.class);
 
         assertThat(venueRepository.size()).isEqualTo(1);
     }
