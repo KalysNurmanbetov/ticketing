@@ -20,4 +20,14 @@ public class WebApiErrorHandler extends ResponseEntityExceptionHandler {
     ProblemDetail handle(VenueNotFoundException error) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, error.getMessage());
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    ProblemDetail handle(IllegalArgumentException error) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, error.getMessage());
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    ProblemDetail handle(IllegalStateException error) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, error.getMessage());
+    }
 }
