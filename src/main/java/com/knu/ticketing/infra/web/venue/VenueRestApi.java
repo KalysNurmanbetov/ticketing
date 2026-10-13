@@ -3,6 +3,7 @@ package com.knu.ticketing.infra.web.venue;
 import com.knu.ticketing.application.venue.CreateVenue;
 import com.knu.ticketing.application.venue.GetVenue;
 import com.knu.ticketing.domain.venue.Venue;
+import com.knu.ticketing.domain.venue.VenueName;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -47,7 +48,7 @@ class VenueRestApi {
         return ResponseEntity.ok(VenueResponse.from(venue));
     }
 
-    record CreateVenueRequest(@NotBlank @Size(max = 200) String name) {
+    record CreateVenueRequest(@NotBlank @Size(max = VenueName.MAX_LENGTH) String name) {
     }
 
     record VenueResponse(UUID id, String name) {
