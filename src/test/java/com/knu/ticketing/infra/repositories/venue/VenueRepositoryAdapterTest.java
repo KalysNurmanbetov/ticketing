@@ -15,6 +15,7 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 
 import java.util.UUID;
 
+import static com.knu.ticketing.infra.repositories.venue.VenueRepositoryAdapter.VENUE_NAME_KEY_INDEX;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -64,7 +65,7 @@ public class VenueRepositoryAdapterTest {
             jpa.flush();
         })
                 .isInstanceOf(DataIntegrityViolationException.class)
-                .hasMessageContaining("venues_name_key");
+                .hasMessageContaining(VENUE_NAME_KEY_INDEX);
 
     }
 
