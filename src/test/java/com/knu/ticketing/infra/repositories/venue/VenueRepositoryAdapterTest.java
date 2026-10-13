@@ -15,6 +15,7 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 
 import java.util.UUID;
 
+import static com.knu.ticketing.infra.repositories.venue.VenueRepositoryAdapter.VENUE_NAME_KEY_INDEX;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -47,7 +48,8 @@ public class VenueRepositoryAdapterTest {
         assertThat(repository.findById(venue.getId()))
                 .get()
                 .extracting(Venue::getName)
-                .isEqualTo(name);
+                .extracting(VenueName::value)
+                .isEqualTo(name.value());
     }
 
     @Test
@@ -61,10 +63,9 @@ public class VenueRepositoryAdapterTest {
         assertThatThrownBy(() -> {
             repository.save(venue2);
             jpa.flush();
-            em.clear();
         })
                 .isInstanceOf(DataIntegrityViolationException.class)
-                .hasMessageContaining("venues_name_key");
+                .hasMessageContaining(VENUE_NAME_KEY_INDEX);
 
     }
 
@@ -83,7 +84,7 @@ public class VenueRepositoryAdapterTest {
     }
 
     @Test
-    void findByName_withDifferentName_returnsSameVenue() {
+    void findByName_withDifferentName_returnsEmpty() {
         VenueName name = new VenueName("Red Room");
         Venue venue = Venue.create(UUID.randomUUID(), name);
         repository.save(venue);
