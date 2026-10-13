@@ -21,13 +21,16 @@ public class WebApiErrorHandler extends ResponseEntityExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, error.getMessage());
     }
 
+    //TODO: Change to more accurate exceptions
     @ExceptionHandler(IllegalArgumentException.class)
     ProblemDetail handle(IllegalArgumentException error) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, error.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, error.getMessage());
     }
 
+    //TODO: Change to more accurate exceptions
     @ExceptionHandler(IllegalStateException.class)
     ProblemDetail handle(IllegalStateException error) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, error.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, error.getMessage());
+    }
     }
 }
