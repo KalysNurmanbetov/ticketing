@@ -12,7 +12,7 @@ import java.util.UUID;
 @Repository
 public class VenueRepositoryAdapter implements VenueRepository {
 
-    public static  final String VENUE_NAME_KEY_INDEX = "venues_name_key";
+    public static final String VENUE_NAME_KEY_INDEX = "venues_name_key";
 
     private final VenueJpaRepository jpa;
 

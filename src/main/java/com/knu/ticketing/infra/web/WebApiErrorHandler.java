@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.util.Objects;
-
 import static com.knu.ticketing.infra.repositories.venue.VenueRepositoryAdapter.VENUE_NAME_KEY_INDEX;
 
 @RestControllerAdvice
@@ -45,16 +43,16 @@ public class WebApiErrorHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     ProblemDetail handle(DataIntegrityViolationException error) {
-        if (error.getCause() instanceof ConstraintViolationException && Objects.equals(
-                ((ConstraintViolationException) error.getCause())
-                        .getConstraintName(), VENUE_NAME_KEY_INDEX
-        )) {
-            return ProblemDetail.forStatusAndDetail(
-                    HttpStatus.CONFLICT,
-                    "The venue with given name exists already"
-            );
+        if (error.getCause() instanceof ConstraintViolationException e &&
+                VENUE_NAME_KEY_INDEX.equals(e.getConstraintName())) {
+            return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, "The venue with given name exists already");
         }
-        log.error("unexpected data integrity violation", error);
+        return handleUnexpected(error);
+    }
+
+    @ExceptionHandler(Exception.class)
+    ProblemDetail handleUnexpected(Exception error) {
+        log.error("unexpected error", error);
         return ProblemDetail.forStatusAndDetail(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 "Internal server error: Please ask your administrator about the error"
