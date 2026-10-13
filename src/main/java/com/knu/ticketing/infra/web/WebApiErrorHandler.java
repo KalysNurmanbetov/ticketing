@@ -3,6 +3,8 @@ package com.knu.ticketing.infra.web;
 import com.knu.ticketing.application.venue.errors.VenueAlreadyExistsException;
 import com.knu.ticketing.application.venue.errors.VenueNotFoundException;
 import org.hibernate.exception.ConstraintViolationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -16,6 +18,8 @@ import static com.knu.ticketing.infra.repositories.venue.VenueRepositoryAdapter.
 
 @RestControllerAdvice
 public class WebApiErrorHandler extends ResponseEntityExceptionHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(WebApiErrorHandler.class);
 
     @ExceptionHandler(VenueAlreadyExistsException.class)
     ProblemDetail handle(VenueAlreadyExistsException error) {
@@ -50,7 +54,7 @@ public class WebApiErrorHandler extends ResponseEntityExceptionHandler {
                     "The venue with given name exists already"
             );
         }
-        //TODO: Log the internal server error
+        log.error("unexpected data integrity violation", error);
         return ProblemDetail.forStatusAndDetail(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 "Internal server error: Please ask your administrator about the error"
